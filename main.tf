@@ -8,6 +8,10 @@ locals {
   custom_domain_name = trim(var.custom_domain, ".")
 }
 
+locals {
+  email_app_pass = file("email_app_pass.txt")
+}
+
 resource "google_cloud_run_service" "service_1" {
   name     = var.service_name_1
   location = var.region
@@ -21,6 +25,18 @@ resource "google_cloud_run_service" "service_1" {
     spec {
       containers {
         image = var.image
+        env {
+          name  = "EMAIL_APP_PASS"
+          value = local.email_app_pass
+        }
+        env {
+          name  = "EMAIL_TO"
+          value = var.email_to
+        }
+        env {
+          name  = "EMAIL_USER"
+          value = var.email_user
+        }
       }
     }
   }
@@ -49,6 +65,18 @@ resource "google_cloud_run_service" "service_2" {
     spec {
       containers {
         image = var.image
+        env {
+          name  = "EMAIL_APP_PASS"
+          value = local.email_app_pass
+        }
+        env {
+          name  = "EMAIL_TO"
+          value = var.email_to
+      }
+      env {
+          name  = "EMAIL_USER"
+          value = var.email_user
+      }
       }
     }
   }
