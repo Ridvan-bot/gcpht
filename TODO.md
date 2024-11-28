@@ -1,5 +1,7 @@
 # TODO List for Terraform
 
+## VPC related
+
 1. **Set up VPC**:
     - Create a Virtual Private Cloud (VPC) to isolate and manage network resources.
     - Configure subnets, routes, and firewall rules.
@@ -44,3 +46,8 @@
 11. **Review and Refactor Code**:
     - Regularly review and refactor Terraform code for improvements.
     - Ensure code follows best practices and is maintainable.
+
+
+## Other tasks
+
+- [ ] Fix app password logic

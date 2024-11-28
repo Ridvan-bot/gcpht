@@ -25,7 +25,7 @@ variable "service_name_2" {
 variable "image" {
   description = "The container image"
   type        = string
-  default     = "gcr.io/dev-pohlmanprotean-website/dev-pohlmanprotean-website-image@sha256:2c9dad3a8aa6ec3b2c42ef7f025f5a2ec5de996c4757e99fc01549c1f7caf482"
+  default     = "gcr.io/dev-pohlmanprotean-website/dev-pohlmanprotean-website-image:latest"
 }
 
 variable "credentials_file" {
@@ -50,4 +50,16 @@ variable "custom_domain" {
   description = "The custom domain to map to the Cloud Run service."
   type        = string
   default     = "dev.pohlmanprotean.se."
+}
+
+variable "email_to" {
+  description = "The recipient email address."
+  type        = string
+  default = "robin.pohlman@gmail.com"
+}
+
+variable "email_user" {
+  description = "The user email address."
+  type        = string
+  default = "robin.pohlman@gmail.com"
 }
