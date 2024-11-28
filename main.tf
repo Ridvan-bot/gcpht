@@ -26,8 +26,13 @@ resource "google_cloud_run_service" "service_1" {
   }
 
   traffic {
-    percent         = 100
+    percent         = 50
     latest_revision = true
+  }
+
+  traffic {
+    percent         = 50
+    revision_name   = "previous-revision-name"
   }
 
   timeouts {
