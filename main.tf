@@ -1,3 +1,10 @@
+terraform {
+  backend "gcs" {
+    bucket  = "terraform-state-dev-pohlmanprotean"
+    prefix  = "dev-pohlmanprotean-website/terraform/state"
+  }
+}
+
 provider "google" {
   project     = var.project_id
   region      = var.region
@@ -8,102 +15,66 @@ locals {
   custom_domain_name = trim(var.custom_domain, ".")
 }
 
-locals {
-  email_app_pass = file("email_app_pass.txt")
-}
-
-resource "google_cloud_run_service" "service_1" {
-  name     = var.service_name_1
-  location = var.region
+resource "google_cloud_run_service" "dev-pohlmanprotean-website" {
+  autogenerate_revision_name = false
+  name                       = var.service_name_1
+  location                   = var.region
+  project                    = var.project_id
 
   template {
     metadata {
+      annotations = {
+        "autoscaling.knative.dev/maxScale"     = "100"
+        "run.googleapis.com/client-name"       = "gcloud"
+        "run.googleapis.com/client-version"    = "502.0.0"
+        "run.googleapis.com/startup-cpu-boost" = "false"
+      }
       labels = {
-        namespace = var.namespace_1
+        "namespace"                           = var.project_id
+        "run.googleapis.com/startupProbeType" = "Custom"
       }
     }
     spec {
+      container_concurrency = 80
+      service_account_name  = var.service_account_name
+      timeout_seconds       = 300
+
       containers {
         image = var.image
-        env {
-          name  = "EMAIL_APP_PASS"
-          value = local.email_app_pass
+        name  = var.imag_name
+        ports {
+          container_port = var.container_port
+          name           = "http1"
         }
-        env {
-          name  = "EMAIL_TO"
-          value = var.email_to
+        resources {
+          limits = {
+            cpu    = "1000m"
+            memory = "512Mi"
+          }
         }
-        env {
-          name  = "EMAIL_USER"
-          value = var.email_user
+        startup_probe {
+          failure_threshold    = 3
+          initial_delay_seconds = 0
+          period_seconds       = 240
+          timeout_seconds      = 10
+          tcp_socket {
+            port = 8080
+          }
         }
       }
     }
   }
 
   traffic {
-    percent         = 100
     latest_revision = true
+    percent         = 100
   }
-
-  timeouts {
-    create = "10m"
-    update = "10m"
-  }
-}
-
-resource "google_cloud_run_service" "service_2" {
-  name     = var.service_name_2
-  location = var.region
-
-  template {
-    metadata {
-      labels = {
-        namespace = var.namespace_2
-      }
-    }
-    spec {
-      containers {
-        image = var.image
-        env {
-          name  = "EMAIL_APP_PASS"
-          value = local.email_app_pass
-        }
-        env {
-          name  = "EMAIL_TO"
-          value = var.email_to
-      }
-      env {
-          name  = "EMAIL_USER"
-          value = var.email_user
-      }
-      }
-    }
-  }
-
   traffic {
-    percent         = 100
-    latest_revision = true
+    latest_revision = false
+    percent         = 0
+    revision_name   = "dev-pohlmanprotean-website-00002-gij"
+    tag             = "v0-12-0"
   }
-
-  timeouts {
-    create = "10m"
-    update = "10m"
-  }
-}
-
-resource "google_cloud_run_service_iam_member" "noauth_service_1" {
-  service    = google_cloud_run_service.service_1.name
-  location   = google_cloud_run_service.service_1.location
-  role       = "roles/run.invoker"
-  member     = "allUsers"
-}
-
-resource "google_cloud_run_service_iam_member" "noauth_service_2" {
-  service    = google_cloud_run_service.service_2.name
-  location   = google_cloud_run_service.service_2.location
-  role       = "roles/run.invoker"
-  member     = "allUsers"
 }
 
 resource "google_cloud_run_domain_mapping" "custom_domain_mapping" {
@@ -113,6 +84,6 @@ resource "google_cloud_run_domain_mapping" "custom_domain_mapping" {
     namespace = var.project_id
   }
   spec {
-    route_name = google_cloud_run_service.service_1.name
+    route_name = google_cloud_run_service.dev-pohlmanprotean-website.name
   }
 }
