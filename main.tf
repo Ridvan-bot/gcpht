@@ -77,6 +77,13 @@ resource "google_cloud_run_service" "dev-pohlmanprotean-website" {
   }
 }
 
+resource "google_cloud_run_service_iam_member" "noauth_dev-pohlmanprotean-website" {
+  service  = google_cloud_run_service.dev-pohlmanprotean-website.name
+  location = google_cloud_run_service.dev-pohlmanprotean-website.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
+
 resource "google_cloud_run_domain_mapping" "custom_domain_mapping" {
   location = var.region
   name     = local.custom_domain_name
