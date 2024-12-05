@@ -20,6 +20,7 @@ Manage Google Cloud infrastructure using Terraform with a focus on scalability a
     ```sh
     terraform init
     ```
+    The Terraform state is stored in a Google Cloud Storage bucket for persistence and collaboration.
 
 4. Plan the infrastructure changes:
     ```sh
@@ -38,33 +39,36 @@ The following variables are used in the Terraform configuration:
 - `project_id`: The ID of the project in which to create the Cloud Run service. Default is `dev-pohlmanprotean-website`.
 - `region`: The region in which to create the Cloud Run service. Default is `europe-west1`.
 - `service_name_1`: The name of the first Cloud Run service. Default is `dev-pohlmanprotean-website`.
-- `service_name_2`: The name of the second Cloud Run service. Default is `dev-pohlmanprotean-website-2`.
-- `image`: The container image to deploy. Default is `gcr.io/dev-pohlmanprotean-website/dev-pohlmanprotean-website-image@sha256:latest`.
+- `image`: The container image to deploy. Default is `gcr.io/dev-pohlmanprotean-website/dev-pohlmanprotean-website-image:v0.12.0`.
+- `image_name`: The container image name. Default is `dev-pohlmanprotean-website-image-1`.
 - `credentials_file`: The path to the service account key file. Default is `service-account.json`.
 - `namespace_1`: The namespace to apply to the first Cloud Run service. Default is `dev-pohlmanprotean-website`.
-- `namespace_2`: The namespace to apply to the second Cloud Run service. Default is `dev-pohlmanprotean-website-2`.
 - `custom_domain`: The custom domain to map to the Cloud Run service. Default is `dev.pohlmanprotean.se.`.
+- `service_id`: The ID of the Service. Default is `locations/europe-west1/namespaces/dev-pohlmanprotean-website/services/dev-pohlmanprotean-website`.
+- `project_name`: The name of the project in which to create the Cloud Run service. Default is `dev-pohlmanprotean-website`.
+- `service_account_name`: The name of the service account to use for the Cloud Run service.
+- `container_port`: The port on which the container listens. Default is `8080`.
+
 
 ## Outputs
 
 The following outputs are provided by the Terraform configuration:
 
 - `service_1_url`: The URL of the first Cloud Run service.
-- `service_2_url`: The URL of the second Cloud Run service.
 
 ## Resources
 
 The following resources are managed by the Terraform configuration:
 
-- `google_cloud_run_service.service_1`: The first Cloud Run service, getting all the traffic from custom domain.
-- `google_cloud_run_service.service_2`: The second Cloud Run service.
-- `google_cloud_run_service_iam_member.noauth_service_1`: IAM member for the first Cloud Run service to allow unauthenticated access.
-- `google_cloud_run_service_iam_member.noauth_service_2`: IAM member for the second Cloud Run service to allow unauthenticated access.
+- `google_cloud_run_service.dev-pohlmanprotean-website`: The Cloud Run service, getting all the traffic from custom domain.
+- `google_cloud_run_service_iam_member.noauth_dev-pohlmanprotean-website`: IAM member for the Cloud Run service to allow unauthenticated access.
 - `google_cloud_run_domain_mapping.custom_domain_mapping`: Domain mapping for the custom domain.
 
 ## Notes
 
 - Ensure that the `credentials_file` variable points to the correct path of your service account key file.
-- Ensure that the `email_app_pass.txt` file exists in root and contains google app pass (This setup is temp) and will be refactored soon.
-- Update the `custom_domain` variable with your actual custom domain.
 - If you need to import existing resources into your Terraform state, use the `terraform import` command.
+
+## Importing Existing Resources
+
+If you need to import existing resources into your Terraform state, use the `terraform import` command. This command allows you to bring existing resources under Terraform management.
