@@ -16,3 +16,7 @@ Google Cloud Run is a managed compute platform that automatically scales your st
 
 ## Repository Structure
 Each directory in this repository represents a separate project in Google Cloud. The Terraform state for each project is stored in a Google Cloud Storage bucket to ensure persistence and collaboration.
+
+
+##
+Crafted with care by Robin Pohlman at Pohlman Protean AB.
