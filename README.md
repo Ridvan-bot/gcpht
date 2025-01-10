@@ -5,6 +5,9 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Ridvan-bot/gcpht)
 ![GitHub issues](https://img.shields.io/github/issues/Ridvan-bot/gcpht)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Ridvan-bot/gcpht)
+
+##
+
 This repository is a monorepo for managing Google Cloud infrastructure using Terraform. Each directory within this repository represents a separate project in Google Cloud. Terraform is used to define, provision, and manage the infrastructure for these projects.
 
 ## Basics
