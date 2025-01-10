@@ -1,5 +1,10 @@
 # Google Cloud Platform HashiCorp Terraform Monorepo
 
+![Build Status](https://github.com/Ridvan-bot/pohlmanprotean.se/actions/workflows/deploy.yml/badge.svg)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/Ridvan-bot/gcpht?label=version&sort=semver)
+![Last Commit](https://img.shields.io/github/last-commit/Ridvan-bot/gcpht)
+![GitHub issues](https://img.shields.io/github/issues/Ridvan-bot/gcpht)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Ridvan-bot/gcpht)
 This repository is a monorepo for managing Google Cloud infrastructure using Terraform. Each directory within this repository represents a separate project in Google Cloud. Terraform is used to define, provision, and manage the infrastructure for these projects.
 
 ## Basics
@@ -19,4 +24,6 @@ Each directory in this repository represents a separate project in Google Cloud.
 
 
 ##
-Crafted with care by **Robin Pohlman** at **Pohlman Protean AB**.
+<p align="center">
+  Crafted with care by <strong>Robin Pohlman</strong> at <strong>Pohlman Protean AB</strong>.
+</p>
